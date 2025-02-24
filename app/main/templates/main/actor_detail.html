@@ -1,0 +1,44 @@
+{% extends 'main/base.html' %}
+{% block title %}{{actor.name}}{% endblock %}
+
+{% block content %}
+<div class="container border shadow bg-light min-vh-100">
+    <div class="row my-5">
+        <div class="col-lg-4">
+            {% if actor.photo %}
+                <img class="bd-placeholder-img rounded mx-auto d-block" src="{{ actor.photo.url }}" width="280" height="418" alt="Фото {{ actor.name }}" >
+            {% endif %}
+        </div>
+        <div class="col-lg-5">
+            <div>
+                <h1 class="fw-bold">{{ actor.name }}</h1>
+            </div>
+
+            <div class="border my-5">
+                <p>Дата рождения: {{ actor.birth_date }}</p>
+                <p>Пол: {{ actor.gender }}</p>
+                <p>Биография: {{ actor.bio }}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Фильмы с участием:</h2>
+        </div>
+        {% for film in films %}
+        <div class="col-1">
+            <img src="{{film.poster.url}}" class="rounded mx-auto d-block" width="70" height="105">
+        </div>
+        <div class="col-2">
+            <p><a href="{% url 'film_detail' film.id %}">{{film.title}}</a></p>
+        </div>
+        {% empty %}
+            <div class="col-12">
+                <p>фильмы не указаны</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

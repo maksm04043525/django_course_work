@@ -1,0 +1,117 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ film.title }}{% endblock %}
+
+{% block content %}
+<div class="container border shadow bg-light min-vh-100">
+    <div class="row my-5">
+        <div class="col-md-4">
+            {% if film.poster %}
+                <img class="bd-placeholder-img rounded mx-auto d-block" src="{{ film.poster.url }}" width="300" height="450" class="img-fluid" alt="{{ film.title }}">
+            {% else %}
+                <img src="https://via.placeholder.com/300x450" class="img-fluid" alt="Постер отсутствует">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h1>{{ film.title }} <i class="bi bi-star-fill"></i>{{ film.rating }}</h1>
+            <p><strong>Год выпуска:</strong> {{ film.release_year }}</p>
+            <p><strong>Бюджет:</strong> ${{ film.budget }}</p>
+            <p><strong>Сборы:</strong> ${{ film.fees }}</p>
+            <p><strong>Описание:</strong> {{ film.descr }}</p>
+            <p><strong>Жанры:</strong>
+                {% for genre in genres %}
+                    {{ genre.genre_name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    <div class="row my-5">
+        <div class="col-1"></div>
+        <div class="col-10">
+            {% if film.trailer_url %}
+                <h3>Трейлер</h3>
+                <div class="ratio ratio-16x9">
+                    {% if "youtube.com/watch?v=" in film.trailer_url %}
+                        {% with film.trailer_url|cut:"https://www.youtube.com/watch?v=" as youtube_id %}
+                            <iframe src="https://www.youtube.com/embed/{{ youtube_id }}" title="YouTube video" allowfullscreen></iframe>
+                        {% endwith %}
+                    {% elif "youtu.be/" in film.trailer_url %}
+                        {% with film.trailer_url|cut:"https://youtu.be/" as youtube_id %}
+                            <iframe src="https://www.youtube.com/embed/{{ youtube_id }}" title="YouTube video" allowfullscreen></iframe>
+                        {% endwith %}
+                    {% elif "vimeo.com/" in film.trailer_url %}
+                        {% with film.trailer_url|cut:"https://vimeo.com/" as vimeo_id %}
+                            <iframe src="https://player.vimeo.com/video/{{ vimeo_id }}" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                        {% endwith %}
+                    {% else %}
+                        <p><a href="{{ film.trailer_url }}" target="_blank">Смотреть трейлер</a></p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div class="row m">
+        <div class="col-12">
+            <h3>Актёры:</h3>
+        </div>
+        {% for actor in actors %}
+        <div class="col-1 my-2">
+            <img src="{{ actor.photo.url }}" class="rounded mx-auto d-block" width="70" height="105">
+        </div>
+        <div class="col-2">
+            <p><a href="{% url 'actor_detail' actor.id %}">{{ actor.name }}</a></p>
+        </div>
+        {% empty %}
+            <div class="col-12">
+                <p>Актёры не указаны</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3>Добавить комментарий:</h3>
+            <form method="post" class="border p-4 bg-light shadow">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="username" class="form-label">{{ form.username.label }}</label>
+                    {{ form.username }}
+                </div>
+                <div class="mb-3">
+                    <label for="rating" class="form-label">{{ form.rating.label }}</label>
+                    {{ form.rating }}
+                </div>
+                <div class="mb-3">
+                    <label for="text" class="form-label">{{ form.text.label }}</label>
+                    {{ form.text }}
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+            </form>
+        </div>
+    </div>
+    <!-- Секция комментариев -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Комментарии:</h3>
+            {% if comments %}
+                <ul class="list-group mb-4">
+                    {% for comment in comments %}
+                        <li class="list-group-item">
+                            <div class="row ">
+                                <div class="col-6"><p class="fw-bold">{{ comment.username }} </p></div>
+                                <div class="col-6"><p class="text-end">{{ comment.created_at|date:"d.m.Y H:i" }}</p></div>
+                            </div>
+                            <span class="text-muted">Рейтинг: {{ comment.rating|default:"-" }}/10</span>
+                            <p>{{ comment.text }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Комментариев пока нет. Будьте первым!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,140 @@
+{% extends 'main/base.html' %}
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<div class="container border shadow bg-light">
+    <div id="myCarousel" class="carousel slide mb-6 shadow" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <!-- Первый слайд -->
+    <div class="carousel-item active">
+        <img src="/media/img/1+11.jpg" class="d-block w-100" height="600" alt="First Slide">
+      <div class="container">
+        <div class="carousel-caption bg-dark rounded" style="--bs-bg-opacity: .5; backdrop-filter: blur(10px);">
+          <h1>{{film.2.title}}</h1>
+          <p><strong>{{ film.2.descr|truncatechars:140 }}</strong></p>
+          <p><a class="btn btn-lg btn-primary" href="{% url 'film_detail' film.2.id %}">Подробнее</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Второй слайд -->
+    <div class="carousel-item">
+      <img src="/media/img/fightclub1.jpg" class="d-block w-100" height="600" alt="First Slide">
+      <div class="container">
+        <div class="carousel-caption bg-dark rounded" style="--bs-bg-opacity: .5; backdrop-filter: blur(10px);">
+          <h1>{{film.1.title}}</h1>
+          <p><strong>{{ film.1.descr|truncatechars:140 }}</strong></p>
+          <p><a class="btn btn-lg btn-primary" href="{% url 'film_detail' film.1.id %}">Подробнее</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Третий слайд -->
+    <div class="carousel-item">
+      <img src="/media/img/sl4.jpg" class="d-block w-100" height="600" alt="First Slide">
+      <div class="container">
+        <div class="carousel-caption bg-dark rounded" style="--bs-bg-opacity: .5; backdrop-filter: blur(10px);">
+          <h1>{{film.5.title}}</h1>
+          <p><strong>{{ film.5.descr|truncatechars:140 }}</strong></p>
+          <p><a class="btn btn-lg btn-primary" href="{% url 'film_detail' film.5.id %}">Подробнее</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
+
+
+
+
+<div class="container marketing border shadow bg-light">
+    <div class="row m-4">
+        <div class="col-12">
+            <h1 class="text-center">Топ актёров кино</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 d-flex flex-column border">
+            <img src="{{actor.0.photo.url}}" class="bd-placeholder-img rounded mx-auto d-block" width="140" height="210">
+            <h2 class="fw-normal">{{actor.0.name}}</h2>
+            <p>{{actor.0.bio}}</p>
+            <p class="mt-auto"><a class="btn btn-secondary" href="{% url 'actor_detail' actor.0.id %}">Подробнее</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 d-flex flex-column border">
+            <img src="{{actor.1.photo.url}}" class="bd-placeholder-img rounded mx-auto d-block" width="140" height="210">
+            <h2 class="fw-normal">{{actor.1.name}}</h2>
+            <p>{{actor.1.bio}}</p>
+            <p class="mt-auto"><a class="btn btn-secondary" href="{% url 'actor_detail' actor.1.id %}">Подробнее</a></p>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4 d-flex flex-column border">
+            <img src="{{actor.2.photo.url}}" class="bd-placeholder-img rounded mx-auto d-block" width="140" height="210">
+            <h2 class="fw-normal">{{actor.2.name}}</h2>
+            <p>{{actor.2.bio}}</p>
+            <p class="mt-auto"><a class="btn btn-secondary" href="{% url 'actor_detail' actor.2.id %}">Подробнее</a></p>
+        </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider my-5">
+    <div class="col-12">
+        <h1  class="text-center">Что смотрят сейчас</h1>
+    </div>
+    <hr class="featurette-divider my-5">
+
+
+    <div class="row featurette">
+        <div class="col-md-8">
+            <h2 class="featurette-heading fw-normal lh-1">{{film.0.title}}</h2>
+            <p class="lead">{{film.0.descr}}</p>
+            <p class="mt-auto"><a class="btn btn-secondary" href="{% url 'film_detail' film.0.id %}">Подробнее о фильме</a></p>
+        </div>
+        <div class="col-md-4 mx-auto">
+            <img class="mx-auto d-block rounded" src="{{film.0.poster.url}}" alt="{{film.0.title}}" width="280" height="420">
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette ">
+        <div class="col-md-8 order-md-2">
+            <h2 class="featurette-heading fw-normal lh-1">{{film.1.title}}</h2>
+            <p class="lead">{{film.1.descr}}</p>
+            <p class="mt-auto"><a class="btn btn-secondary" href="{% url 'film_detail' film.1.id %}">Подробнее о фильме</a></p>
+        </div>
+        <div class="col-md-4 order-md-1 mx-auto">
+            <img class="mx-auto d-block rounded" src="{{film.1.poster.url}}" alt="{{film.1.title}}" width="280" height="420">
+        </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+        <div class="col-md-8">
+            <h2 class="featurette-heading fw-normal lh-1">{{film.2.title}}</h2>
+            <p class="lead">{{film.2.descr}}</p>
+            <p class="mt-auto"><a class="btn btn-secondary" href="{% url 'film_detail' film.2.id %}">Подробнее о фильме</a></p>
+        </div>
+        <div class="col-md-4 mx-auto">
+            <img class="mx-auto d-block rounded" src="{{film.2.poster.url}}" alt="{{film.2.title}}" width="280" height="420">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

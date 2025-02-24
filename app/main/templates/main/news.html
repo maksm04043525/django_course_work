@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Новости и анонсы{% endblock %}
+
+{% block content %}
+<div class="container py-5 marketing border shadow bg-light min-vh-100">
+    <h1 class="mb-4">Новости и анонсы</h1>
+    <div class="row gy-4">
+        {% for announcement in announ %}
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    {% if announcement.image %}
+                        <img src="{{ announcement.image.url }}" class="card-img-top" alt="{{ announcement.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ announcement.title }}</h5>
+                        <p class="card-text">{{ announcement.descr|truncatechars:120 }}</p>
+                        <p class="text-muted"><small>Дата анонса: {{ announcement.date|date:"d M Y" }}</small></p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>На данный момент нет анонсов.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

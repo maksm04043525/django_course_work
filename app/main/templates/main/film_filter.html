@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Список фильмов{% endblock %}
+
+{% block content %}
+<div class="container marketing border shadow bg-light">
+  <form method="get" action="{% url 'film_filter' %}">
+    <div class="row my-4">
+      <!-- Фильтрация по жанрам -->
+      <div class="col-3">
+        <h3>Жанры:</h3>
+        {% for genre in genres %}
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="genres" value="{{ genre.id }}"
+                   id="genre-{{ genre.id }}" {% if genre.id in selected_genres %}checked{% endif %}>
+            <label class="form-check-label" for="genre-{{ genre.id }}">
+              {{ genre.genre_name }}
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Поиск по названию -->
+      <div class="col-6">
+        <h3>Поиск:</h3>
+        <div class="mb-3">
+          <input type="text" class="form-control" name="search" placeholder="Введите название фильма"
+                 value="{{ search_query }}">
+        </div>
+      </div>
+
+      <!-- Кнопка фильтрации -->
+      <div class="col-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Применить фильтры</button>
+      </div>
+    </div>
+
+    <!-- Список фильмов -->
+    <div class="row my-4">
+      <div class="col-12">
+        <h3>Фильмы:</h3>
+        <div class="row gy-3">
+          {% for film in films %}
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm" style="height: 100%;">
+                {% if film.poster %}
+                  <img src="{{ film.poster.url }}" class="card-img-top" alt="{{ film.title }}" style="object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">{{ film.title }}</h5>
+                  <p class="card-text" style="flex-grow: 1; max-height: 100px; overflow: hidden;">{{ film.descr|truncatechars:120 }}</p>
+                  <a href="{% url 'film_detail' film.id %}" class="btn btn-primary mt-auto">Подробнее</a>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-muted">Фильмы не найдены.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
